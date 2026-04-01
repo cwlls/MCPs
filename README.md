@@ -44,6 +44,46 @@ Add servers to your settings (global `~/.claude/settings.json` or project `.clau
 }
 ```
 
+## Setup
+
+Before using any server, install its dependencies by running `uv sync` inside that server's directory:
+
+```sh
+cd jira && uv sync
+cd confluence && uv sync
+```
+
+This generates the virtual environment that `uv run` uses when Claude spawns the server.
+
+## Claude Desktop integration (macOS)
+
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (create it if it doesn't exist). The format is the same `mcpServers` block as above:
+
+```json
+{
+  "mcpServers": {
+    "jira": {
+      "command": "uv",
+      "args": ["run", "python", "/path/to/MCPs/jira/server.py"],
+      "env": {
+        "JIRA_BASE_URL": "https://jira.yourcompany.com",
+        "JIRA_PAT": "your-token"
+      }
+    },
+    "confluence": {
+      "command": "uv",
+      "args": ["run", "python", "/path/to/MCPs/confluence/server.py"],
+      "env": {
+        "CONFLUENCE_BASE_URL": "https://confluence.yourcompany.com",
+        "CONFLUENCE_PAT": "your-token"
+      }
+    }
+  }
+}
+```
+
+Replace `/path/to/MCPs` with the absolute path to this repo (e.g. `/Users/yourname/MCPs`). After saving, restart Claude Desktop for the changes to take effect.
+
 ## Adding a new server
 
 1. Create a subdirectory: `<name>/`
